@@ -22,14 +22,9 @@ type Node struct {
 	X, Y float32
 }
 
-type Edge struct {
-	From *Node
-	To   *Node
-}
-
 type Game struct {
 	nodes       []*Node
-	edges       []Edge
+	Connections []Connection
 	draggedNode *Node
 	dragOffsetX float32
 	dragOffsetY float32
@@ -39,13 +34,13 @@ func NewGame() *Game {
 
 	n1 := &Node{ID: 1, Type: "Router", X: 150, Y: 200}
 	n2 := &Node{ID: 2, Type: "Switch", X: 400, Y: 150}
-	n3 := &Node{ID: 3, Type: "Szerver 1", X: 650, Y: 100}
-	n4 := &Node{ID: 4, Type: "Szerver 2", X: 650, Y: 300}
-	n5 := &Node{ID: 5, Type: "Kliens PC", X: 400, Y: 400}
+	n3 := &Node{ID: 3, Type: "Server", X: 650, Y: 100}
+	n4 := &Node{ID: 4, Type: "Server", X: 650, Y: 300}
+	n5 := &Node{ID: 5, Type: "Client", X: 400, Y: 400}
 
 	nodes := []*Node{n1, n2, n3, n4, n5}
 
-	edges := []Edge{
+	Connections := []Connection{
 		{From: n1, To: n2},
 		{From: n2, To: n3},
 		{From: n2, To: n4},
@@ -53,8 +48,8 @@ func NewGame() *Game {
 	}
 
 	return &Game{
-		nodes: nodes,
-		edges: edges,
+		nodes:       nodes,
+		Connections: Connections,
 	}
 }
 
@@ -93,14 +88,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	screen.Fill(color.RGBA{R: 30, G: 30, B: 35, A: 255})
 
-	edgeColor := color.RGBA{R: 120, G: 140, B: 160, A: 255}
-	for _, edge := range g.edges {
+	ConnectionColor := color.RGBA{R: 120, G: 140, B: 160, A: 255}
+	for _, Connection := range g.Connections {
 		vector.StrokeLine(
 			screen,
-			edge.From.X, edge.From.Y,
-			edge.To.X, edge.To.Y,
+			Connection.From.X, Connection.From.Y,
+			Connection.To.X, Connection.To.Y,
 			2.5,
-			edgeColor,
+			ConnectionColor,
 			true,
 		)
 	}
@@ -120,7 +115,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		ebitenutil.DebugPrintAt(screen, node.Type, labelX, labelY)
 	}
 
-	ebitenutil.DebugPrint(screen, "Hálózati Diagram (Ebitengine)\nHúzd a csomópontokat az egérrel!")
+	ebitenutil.DebugPrint(screen, "")
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -129,7 +124,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 	ebiten.SetWindowSize(screenWidth, screenHeight)
-	ebiten.SetWindowTitle("Go Hálózati Rajzoló - Ebitengine")
+	ebiten.SetWindowTitle("")
 
 	game := NewGame()
 	if err := ebiten.RunGame(game); err != nil {
