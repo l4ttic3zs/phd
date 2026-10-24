@@ -1,4 +1,4 @@
-package main
+package entities
 
 type Connection struct {
 	ID                 int
