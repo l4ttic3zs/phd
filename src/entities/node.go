@@ -1,7 +1,8 @@
 package entities
 
 type Node struct {
-	ID   int
-	Type string
-	X, Y float32
+	ID          int     `yaml:"-"`
+	Type        string  `yaml:"name"`
+	NwFunctions []VNF   `yaml:"-"`
+	X, Y        float32 `yaml:"-"`
 }

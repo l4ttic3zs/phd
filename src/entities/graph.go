@@ -19,11 +19,11 @@ const (
 )
 
 type Graph struct {
-	nodes       []*Node
-	Connections []*Connection
-	draggedNode *Node
-	dragOffsetX float32
-	dragOffsetY float32
+	nodes       []*Node       `yaml:"nodes"`
+	Connections []*Connection `yaml:"connections"`
+	draggedNode *Node         `yaml:"-"`
+	dragOffsetX float32       `yaml:"-"`
+	dragOffsetY float32       `yaml:"-"`
 }
 
 func NewGraph(file string) *Graph {
