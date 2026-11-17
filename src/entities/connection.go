@@ -1,9 +1,9 @@
 package entities
 
 type Connection struct {
-	ID                 int     `yaml:"-"`
 	From               *Node   `yaml:"from"`
 	To                 *Node   `yaml:"to"`
+	Weight             float32 `yaml:"weight"`
 	Slices             []Slice `yaml:"-"`
 	status             Status  `yaml:"-"`
 	maxBandwidth       int     `yaml:"-"`
@@ -17,7 +17,6 @@ type Connection struct {
 
 func NewConnection(ID int, From *Node, To *Node, maxBandwidth int, latency int, status Status) *Connection {
 	return &Connection{
-		ID:                 ID,
 		From:               From,
 		To:                 To,
 		maxBandwidth:       maxBandwidth,

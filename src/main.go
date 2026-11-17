@@ -1,29 +1,29 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"log"
-	"nwgraph/entities"
+	"nwgraph/commands"
 	"os"
 
-	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	file := flag.String("graph", "", "Graph YAML path to file")
-	flag.Parse()
-	if *file == "" {
-		fmt.Println("Graph file location is required")
-		flag.PrintDefaults()
-		os.Exit(1)
+	var graphFile string
+
+	var rootCmd = &cobra.Command{
+		Use:   "nwgraph",
+		Short: "",
 	}
 
-	ebiten.SetWindowSize(entities.ScreenWidth, entities.ScreenHeight)
-	ebiten.SetWindowTitle("")
+	allcommand := commands.GetCommands(graphFile)
 
-	graph := entities.NewGraph(*file)
-	if err := ebiten.RunGame(graph); err != nil {
-		log.Fatal(err)
+	for _, c := range allcommand {
+		rootCmd.AddCommand(&c)
+	}
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
